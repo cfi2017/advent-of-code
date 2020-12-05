@@ -3,13 +3,17 @@ import os
 import sys
 import requests
 
+dir_override = ''
+
 
 def make_main_py_template(day):
-    template = """f = open('input.txt', 'r')
-input = f.read()
-f.close()
+    template = """from aocd.models import Puzzle
+puzzle = Puzzle(year=2020, day={})
+input = puzzle.input_data
 
-"""
+
+
+""".format(day)
     return template
 
 
@@ -48,6 +52,8 @@ def get_auth_token():
 
 
 d = sys.argv[1]
+if len(sys.argv) > 2:
+    dir_override = sys.argv[2]
 if check_day_folder_exists(d):
     print('day exists')
     exit(1)
