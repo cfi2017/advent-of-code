@@ -1,4 +1,5 @@
 from aocd.models import Puzzle
+import time
 
 puzzle = Puzzle(year=2020, day=7)
 input = puzzle.input_data
@@ -6,8 +7,8 @@ input = puzzle.input_data
 
 # recursively finds the total bags contained in a bag (including the containing bag)
 def count_inner_bags(rules, color):
-    child_counts = (rules[color][child] * count_inner_bags(rules, child) for child in rules[color])
-    return sum(child_counts) + 1
+    child_counts = (rules[color][child] * (count_inner_bags(rules, child) + 1) for child in rules[color])
+    return sum(child_counts)
 
 
 # parse takes a string line and returns a touple (color, {'child_color': count})
@@ -24,15 +25,34 @@ def parse(line):
 macguffin = 'shiny gold'
 rules = dict(map(parse, input.splitlines()))
 
-# variables for part 1
-containing_bags = [macguffin]
-last_length = -1
 
 # calc part 1
-while len(containing_bags) > last_length:
-    last_length = len(containing_bags)
-    containing_bags = {*containing_bags, *[bag for (bag, children) in rules.items()
-                                           if any(colour in children for colour in containing_bags)]}
+def part_1():
+    # variables for part 1
+    containing_bags = [macguffin]
+    last_length = -1
+    while len(containing_bags) > last_length:
+        last_length = len(containing_bags)
+        containing_bags = {*containing_bags, *[bag for (bag, children) in rules.items()
+                                               if any(colour in children for colour in containing_bags[last_length:])]}
+    return len(containing_bags)
+
 
 # print both parts
-print(len(containing_bags) - 1, count_inner_bags(rules, macguffin) - 1)
+print(part_1() - 1, count_inner_bags(rules, macguffin))
+
+time_total = 0
+test_count = 100
+for temp_step in range(test_count):
+    time_before = time.time()
+    part_1()
+    time_total += time.time() - time_before
+print(test_count, "trials took", time_total / test_count)
+time_total = 0
+for temp_step in range(test_count):
+    time_before = time.time()
+    count_inner_bags(rules, macguffin)
+    time_total += time.time() - time_before
+print(test_count, "trials took", time_total / test_count)
+# 2.9e-05 => 0.000029
+
