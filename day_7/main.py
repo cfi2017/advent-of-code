@@ -4,10 +4,14 @@ import time
 puzzle = Puzzle(year=2020, day=7)
 input = puzzle.input_data
 
+cache = {}
+
 
 # recursively finds the total bags contained in a bag (including the containing bag)
 def count_inner_bags(rules, color):
-    child_counts = (rules[color][child] * (count_inner_bags(rules, child) + 1) for child in rules[color])
+    global cache
+    child_counts = (rules[color][child] * (count_inner_bags(rules, child) if child not in cache else cache[child] + 1)
+                    for child in rules[color])
     return sum(child_counts)
 
 

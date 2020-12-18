@@ -9,7 +9,7 @@ dir_override = ''
 def make_main_py_template(day):
     template = """from aocd.models import Puzzle
 puzzle = Puzzle(year=2020, day={})
-input = puzzle.input_data
+data = puzzle.input_data
 
 
 

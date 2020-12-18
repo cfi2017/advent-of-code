@@ -27,7 +27,7 @@ def check_last(nums, num):
 def part_2(nums, val):
     for i, x in enumerate(nums):
         s = nums[i]
-        for i2, y in enumerate(nums[i + 1:]):
+        for i2, y in enumerate(nums[i+1:]):
             s += y
             if s == val:
                 r = nums[i:i + 1 + i2]
@@ -41,7 +41,7 @@ answer_b = part_2(lines, answer_a)
 print(answer_a, answer_b)
 
 time_total = 0
-test_count = 1000
+test_count = 100
 for temp_step in range(test_count):
     time_before = time.time()
     part_1(lines)
