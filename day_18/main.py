@@ -1,3 +1,5 @@
+import time
+
 from aocd.models import Puzzle
 puzzle = Puzzle(year=2020, day=18)
 data = puzzle.input_data
@@ -63,7 +65,7 @@ def eval_flat_tree(tree, ops):
 def eval_expr_tree(tree, precedence=True):
     for i in range(len(tree)):
         if isinstance(tree[i], list):
-            tree[i] = eval_expr_tree(tree[i])
+            tree[i] = eval_expr_tree(tree[i], precedence)
     if precedence:
         tree = eval_flat_tree(tree, [add])
         return eval_flat_tree(tree, [mul])[0]
@@ -71,13 +73,41 @@ def eval_expr_tree(tree, precedence=True):
         return eval_flat_tree(tree, [add, mul])[0]
 
 
-sample1 = eval_expr_tree(build_expr_tree(sample1), False)
-assert sample1 == 71
-sample2 = eval_expr_tree(build_expr_tree(sample2), False)
-assert sample2 == 51
-
-res = 0
+res1 = 0
+res2 = 0
 for line in data.splitlines():
-    res += eval_expr_tree(build_expr_tree(line))
+    res1 += eval_expr_tree(build_expr_tree(line), False)
+    res2 += eval_expr_tree(build_expr_tree(line))
 
-print(res)
+
+assert eval_expr_tree(build_expr_tree(sample1), False) == 71
+assert eval_expr_tree(build_expr_tree(sample2), False) == 51
+assert eval_expr_tree(build_expr_tree("2 * 3 + (4 * 5)"), False) == 26
+assert eval_expr_tree(build_expr_tree("5 + (8 * 3 + 9 + 3 * 4 * 3)"), False) == 437
+assert eval_expr_tree(build_expr_tree("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))"), False) == 12240
+assert eval_expr_tree(build_expr_tree("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2"), False) == 13632
+
+assert eval_expr_tree(build_expr_tree("1 + 2 * 3 + 4 * 5 + 6")) == 231
+assert eval_expr_tree(build_expr_tree("1 + (2 * 3) + (4 * (5 + 6))")) == 51
+assert eval_expr_tree(build_expr_tree("2 * 3 + (4 * 5)")) == 46
+assert eval_expr_tree(build_expr_tree("5 + (8 * 3 + 9 + 3 * 4 * 3)")) == 1445
+assert eval_expr_tree(build_expr_tree("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))")) == 669060
+assert eval_expr_tree(build_expr_tree("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2")) == 23340
+
+assert res1 == 6640667297513
+assert res2 == 451589894841552
+print(res1)
+print(res2)
+
+
+res1 = 0
+res2 = 0
+time_total = 0
+test_count = 100
+for temp_step in range(test_count):
+    time_before = time.time()
+    for line in data.splitlines():
+        res1 += eval_expr_tree(build_expr_tree(line), False)
+        res2 += eval_expr_tree(build_expr_tree(line))
+    time_total += time.time() - time_before
+print(test_count, "trials took", time_total / test_count)
