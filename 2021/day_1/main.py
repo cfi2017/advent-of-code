@@ -1,13 +1,26 @@
 from aocd.models import Puzzle
 from aocd import submit
+from functools import reduce
 
-puzzle = Puzzle(year=2021, day=1)
+YEAR = 2021
+DAY = 2
+puzzle = Puzzle(year=YEAR, day=DAY)
 data = puzzle.input_data
-lines = list(map(int, data.splitlines()))
+lines = data.splitlines()
 
-result_a = sum([lines[i] < num for i, num in enumerate(lines[1:])])
-result_b = sum([sum(lines[i:i + 3]) < sum(lines[i + 1:i + 4]) for i, num in enumerate(lines[:-3])])
+conversions = {
+    'forward': lambda x, h, v, v2, a: (h + x, v, v_2 + x * a, a),
+    'up': lambda x, h, v, v2, a: (h, v - x, v_2, a - x),
+    'down': lambda x, h, v, v2, a: (h, v + x, v_2, a + x),
+}
 
-submit(result_a, part="a", year=2021, day=1)
-submit(result_b, part="b", year=2021, day=1)
+if __name__ == '__main__':
+    h, v, v_2, aim = 0, 0, 0, 0
+    for line in lines:
+        k, x = line.split(' ')
+        h, v, v_2, aim = conversions[k](int(x), h, v, v_2, aim)
+    result_a = v * h
+    result_b = v_2 * h
+    submit(result_a, part="a", year=YEAR, day=DAY)
+    submit(result_b, part="b", year=YEAR, day=DAY)
 
