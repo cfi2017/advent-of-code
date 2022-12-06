@@ -4,16 +4,17 @@ import sys
 import requests
 
 dir_override = ''
+YEAR = 2022
 
 
 def make_main_py_template(day):
     template = """from aocd.models import Puzzle
-puzzle = Puzzle(year=2020, day={})
+puzzle = Puzzle(year={}, day={})
 data = puzzle.input_data
 
 
 
-""".format(day)
+""".format(YEAR, day)
     return template
 
 
@@ -24,7 +25,7 @@ def write_string_to_file(file, s):
 
 
 def day_dir(day):
-    return "day_{}".format(day)
+    return "{}/day_{}".format(YEAR, day)
 
 
 def check_day_folder_exists(day):
@@ -36,7 +37,7 @@ def make_day_folder(day):
 
 
 def download_input(day, token):
-    res = requests.get('https://adventofcode.com/2020/day/{}/input'.format(day), cookies={'session': token})
+    res = requests.get('https://adventofcode.com/{}/day/{}/input'.format(YEAR, day), cookies={'session': token})
     write_string_to_file('{}/input.txt'.format(day_dir(day)), res.text)
 
 
