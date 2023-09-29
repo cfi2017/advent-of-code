@@ -4,18 +4,18 @@ use std::ops::{Add, AddAssign, Div, Mul, Sub};
 use crate::aoc::parse_ints;
 
 enum ParameterMode {
-    Direct,
-    Indirect, // index, double deref
+    Immediate,
+    Position, // index, double deref
     Relative // same as indirect, but offset with relative base
 }
 
 impl From<i64> for ParameterMode {
     fn from(i: i64) -> Self {
         match i {
-            // aka position mode
-            0 => Self::Indirect,
-            // aka immediate mode
-            1 => Self::Direct,
+            // aka indirect, deref mode
+            0 => Self::Position,
+            // aka direct mode
+            1 => Self::Immediate,
             // aka relative mode
             2 => Self::Relative,
             _ => panic!("unknown parameter mode: {}", i)
@@ -41,9 +41,9 @@ impl Parameter {
     fn resolve(self, state: &[i64], relative_base: i64) -> i64 {
         match self.mode {
             // direct: simply return the value at this address
-            ParameterMode::Direct => state[self.arg_pos as usize],
+            ParameterMode::Immediate => state[self.arg_pos as usize],
             // indirect: return the value at the address stored at this address
-            ParameterMode::Indirect => state[state[self.arg_pos as usize] as usize],
+            ParameterMode::Position => state[state[self.arg_pos as usize] as usize],
             // relative: return the value at the address stored at this address + relative base
             ParameterMode::Relative => state[(relative_base + state[(self.arg_pos) as usize]) as usize]
         }
@@ -53,9 +53,9 @@ impl Parameter {
     fn resolve_pos(self, state: &[i64], relative_base: i64) -> i64 {
         match self.mode {
             // direct: simply return this address
-            ParameterMode::Direct => self.arg_pos,
+            ParameterMode::Immediate => self.arg_pos,
             // indirect: return the value at this address (which is the address of the value)
-            ParameterMode::Indirect => state[self.arg_pos as usize],
+            ParameterMode::Position => state[self.arg_pos as usize],
             // relative: return the value at this address + relative base (which is the address of the value)
             ParameterMode::Relative => relative_base + state[( self.arg_pos) as usize]
         }
