@@ -7,9 +7,9 @@ use std::str::FromStr;
 use crate::aoc::{Puzzle, read_input};
 use euclid::{Point2D, Size2D};
 
-struct Day03;
+pub struct Day03;
 
-#[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
+#[derive(Copy, Clone, Debug, Eq, Hash)]
 struct WeightedPoint {
     point: Point,
     weight: i32,
@@ -44,8 +44,14 @@ impl WeightedPoint {
     }
 }
 
+impl PartialEq for WeightedPoint {
+    fn eq(&self, other: &Self) -> bool {
+        self.point == other.point
+    }
+}
+
 #[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
-struct Point {
+pub struct Point {
     x: i32,
     y: i32,
 }
@@ -132,7 +138,7 @@ impl FromStr for Instruction {
 }
 
 #[derive(Clone)]
-struct Wire {
+pub struct Wire {
     instructions: Vec<Instruction>,
 }
 
@@ -168,10 +174,7 @@ impl FromStr for Wire {
 
 
 
-impl Puzzle<(Wire, Wire), i32, i32> for Day03 {
-    fn get_input(&self) -> String {
-        read_input(2019, 3).unwrap()
-    }
+impl Puzzle<(Wire, Wire), i32, i32, 2019, 3> for Day03 {
 
     fn sanitize_input(&self, input: &str) -> (Wire, Wire) {
         let wires: Vec<Wire> = input.split("\n")
@@ -193,15 +196,21 @@ impl Puzzle<(Wire, Wire), i32, i32> for Day03 {
     }
 
     fn solve_b(&self, input: (Wire, Wire)) -> i32 {
+        let points_a: HashSet<Point, RandomState> = HashSet::from_iter(input.0.get_points().iter().map(WeightedPoint::to_point));
+        let points_b: HashSet<Point, RandomState> = HashSet::from_iter(input.1.get_points().iter().map(WeightedPoint::to_point));
+        let intersecting: HashSet<_> = points_a.intersection(&points_b).collect();
         let points_a = input.0.get_points();
         let points_a: HashSet<&WeightedPoint, RandomState> = HashSet::from_iter(points_a.iter());
         let points_b = input.1.get_points();
         let points_b: HashSet<&WeightedPoint, RandomState> = HashSet::from_iter(points_b.iter());
-        let intersecting: HashSet<_> = points_a.intersection(&points_b).collect();
-        let mut arr: Vec<_> = intersecting.iter().collect();
-        arr.sort_by(|p1, p2| p1.weight.cmp(&p2.weight));
-        let result = arr.get(0).unwrap();
-        return distance_to_root(&result.point);
+        let b = intersecting.iter().map(|pi| {
+            // map each intersection point to the minimum sum available for all available points
+            // then find the minimum of those
+            let points_a = points_a.iter().filter(|p| p.point == **pi).map(|p| p.weight).min();
+            let points_b = points_b.iter().filter(|p| p.point == **pi).map(|p| p.weight).min();
+            points_a.unwrap() + points_b.unwrap()
+        }).min().unwrap();
+        return b;
     }
 }
 
@@ -219,7 +228,7 @@ mod tests {
 
     #[test]
     fn test_solve() {
-        let input = "R8,U5,L5,D3
+        let input = "R8,U5,L5,D3\
 U7,R6,D4,L4";
 
         let input = Day03.sanitize_input(input);

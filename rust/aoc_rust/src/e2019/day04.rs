@@ -5,10 +5,7 @@ use crate::aoc::{Puzzle, read_input};
 
 pub struct Day04;
 
-impl Puzzle<RangeInclusive<i32>, i32, i32> for Day04 {
-    fn get_input(&self) -> String {
-        read_input(2019, 4).unwrap()
-    }
+impl Puzzle<RangeInclusive<i32>, i32, i32, 2019, 4> for Day04 {
 
     fn sanitize_input(&self, _: &str) -> RangeInclusive<i32> {
         246515..=739105

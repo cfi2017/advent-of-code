@@ -1,7 +1,7 @@
 use std::str::FromStr;
 use crate::aoc::{Puzzle, read_input};
 
-struct Day06;
+pub struct Day06;
 
 #[derive(Copy, Clone)]
 struct Swarm {
@@ -48,10 +48,7 @@ impl Swarm {
     }
 }
 
-impl Puzzle<Swarm, i64, i64> for Day06 {
-    fn get_input(&self) -> String {
-        read_input(2021, 6).unwrap()
-    }
+impl Puzzle<Swarm, i64, i64, 2021, 6> for Day06 {
 
     fn sanitize_input(&self, input: &str) -> Swarm {
         Swarm::from_str(&input).unwrap()

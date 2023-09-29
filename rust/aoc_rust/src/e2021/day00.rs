@@ -3,10 +3,7 @@ use crate::aoc::Puzzle;
 
 struct Day00;
 
-impl Puzzle<Vec<String>, i32, i32> for Day00 {
-    fn get_input(&self) -> String {
-        unimplemented!()
-    }
+impl Puzzle<Vec<String>, i32, i32, 2021, 0> for Day00 {
 
     fn sanitize_input(&self, _: &str) -> Vec<String> {
         unimplemented!()

@@ -4,7 +4,7 @@ use crate::aoc::{Puzzle, read_input};
 
 struct Day01;
 
-impl Puzzle<Vec<String>, i32, i32> for Day01 {
+impl Puzzle<Vec<String>, i32, i32, 2022, 1> for Day01 {
     fn get_input(&self) -> String {
         read_input(2022, 1).unwrap()
     }

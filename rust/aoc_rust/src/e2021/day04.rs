@@ -102,10 +102,7 @@ impl Input {
     }
 }
 
-impl Puzzle<Input, i32, i32> for Day04 {
-    fn get_input(&self) -> String {
-        read_input(2021, 4).unwrap()
-    }
+impl Puzzle<Input, i32, i32, 2021, 4> for Day04 {
 
     fn sanitize_input(&self, input: &str) -> Input {
         Input::from(input)

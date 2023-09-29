@@ -110,10 +110,7 @@ mod submarine {
     }
 }
 
-impl Puzzle<Vec<Command>, i32, i32> for Day02 {
-    fn get_input(&self) -> String {
-        read_input(2021, 2).unwrap()
-    }
+impl Puzzle<Vec<Command>, i32, i32, 2021, 2> for Day02 {
 
     fn sanitize_input(&self, input: &str) -> Vec<Command> {
         input.split("\n").filter(|s| !s.is_empty())

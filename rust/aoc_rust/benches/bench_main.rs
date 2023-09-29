@@ -9,4 +9,5 @@ criterion_main! {
     // 2019
     e2019::day01::benches,
     e2019::day04::benches,
+    e2019::day12::benches,
 }

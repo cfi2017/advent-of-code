@@ -1,11 +1,8 @@
 use crate::aoc::{parse_ints, Puzzle, read_input};
 
-struct Day07;
+pub struct Day07;
 
-impl Puzzle<Vec<i32>, i32, i32> for Day07 {
-    fn get_input(&self) -> String {
-        read_input(2021, 7).unwrap()
-    }
+impl Puzzle<Vec<i32>, i32, i32, 2021, 7> for Day07 {
 
     fn sanitize_input(&self, input: &str) -> Vec<i32> {
         parse_ints(input, ",")

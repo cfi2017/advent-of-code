@@ -59,10 +59,7 @@ impl Day03 {
     }
 }
 
-impl Puzzle<Input, i32, i32> for Day03 {
-    fn get_input(&self) -> String {
-        read_input(2021, 3).unwrap()
-    }
+impl Puzzle<Input, i32, i32, 2021, 3> for Day03 {
 
     fn sanitize_input(&self, input: &str) -> Input {
         let bit_length = input.splitn(2, "\n").nth(0).unwrap().chars().count();

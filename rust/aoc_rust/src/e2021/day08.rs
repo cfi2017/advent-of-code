@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::str::FromStr;
 use crate::aoc::Puzzle;
 
-struct Day08;
+pub struct Day08;
 
 /**
 2 3 4 7 number of segments
@@ -93,10 +93,7 @@ struct Digit {
 
 }
 
-impl Puzzle<Vec<String>, i32> for Day08 {
-    fn get_input(&self) -> String {
-        unimplemented!()
-    }
+impl Puzzle<Vec<String>, i32, i32, 2021, 8> for Day08 {
 
     fn sanitize_input(&self, _: &str) -> Vec<String> {
         unimplemented!()

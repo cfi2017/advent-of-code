@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::str::FromStr;
 use crate::aoc::{Puzzle, read_input};
 
-struct Day05;
+pub struct Day05;
 
 #[derive(Eq, PartialEq, Hash, Copy, Clone, Debug)]
 struct Point {
@@ -104,10 +104,7 @@ impl FromStr for Line {
     }
 }
 
-impl Puzzle<Vec<Line>, i32, i32> for Day05 {
-    fn get_input(&self) -> String {
-        read_input(2021, 5).unwrap()
-    }
+impl Puzzle<Vec<Line>, i32, i32, 2021, 5> for Day05 {
 
     fn sanitize_input(&self, input: &str) -> Vec<Line> {
         input.split("\n")

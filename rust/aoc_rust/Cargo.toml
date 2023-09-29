@@ -6,13 +6,22 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dev-dependencies]
 criterion = {version = "0.3", features = ["html_reports"]}
-itertools = "0.10.5"
+proc-macro2 = "1.0.67"
 
 [dependencies]
+aoc-client = "0.2.0"
 aocf = {version = "0.1.18", features = ["html_parsing"]}
 aoc-runner = "0.3.0"
 aoc-runner-derive = "0.3.0"
+itertools = "0.11.0"
 euclid = "0.22.7"
+tinyvec = "1.6.0"
+thiserror = "1.0.48"
+query_map = "0.7.0"
+anyhow = "1.0.75"
+convert-base = "1.1.2"
+radix_fmt = "1.0.0"
+num = "0.4.1"
 
 [[bench]]
 name = "bench_main"
