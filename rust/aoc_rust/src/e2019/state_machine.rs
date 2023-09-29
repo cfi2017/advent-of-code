@@ -138,11 +138,18 @@ impl From<(usize, i64)> for Instruction {
     }
 }
 
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+pub enum DisplayMode {
+    Primitive,
+    Proper
+}
+
 #[derive(Clone)]
 pub struct StateMachine {
     state: Vec<i64>,
     position: usize,
     done: bool,
+    display: DisplayMode,
     pub input: VecDeque<i64>,
     pub output: Vec<i64>,
     relative_base: i64,
@@ -154,6 +161,7 @@ impl From<&str> for StateMachine {
             state: parse_ints(s, ","),
             position: 0,
             done: false,
+            display: DisplayMode::Proper,
             input: VecDeque::new(),
             output: Vec::new(),
             relative_base: 0,
@@ -165,7 +173,15 @@ impl From<&str> for StateMachine {
 
 impl Display for StateMachine {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        Display::fmt(&self.state[0], f)
+        // a first iteration of the state machine did not implement output
+        // and instead had you read the first value of the tape
+        // for backwards compatibility reasons we implement display for the state machine outputting
+        // the first value of the tape
+        // in future iterations display the output vector instead.
+        match self.display {
+            DisplayMode::Primitive => Display::fmt(&self.state[0], f),
+            DisplayMode::Proper => Display::fmt(&self.output.last().unwrap(), f),
+        }
     }
 }
 
