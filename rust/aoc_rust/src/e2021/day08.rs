@@ -1,5 +1,4 @@
-#![cfg(target_os = "linux")]
-use core::panicking::panic;
+#![cfg(target_os = "windows")]
 use std::collections::HashMap;
 use std::str::FromStr;
 use crate::aoc::Puzzle;

@@ -97,13 +97,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "aoc_core"
-version = "0.1.0"
-dependencies = [
- "inventory",
-]
-
-[[package]]
 name = "aoc_rust"
 version = "0.1.0"
 dependencies = [
