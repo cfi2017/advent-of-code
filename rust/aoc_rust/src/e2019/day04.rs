@@ -1,7 +1,7 @@
 use std::ops::RangeInclusive;
 // use itertools::FoldWhile::{Continue, Done};
 use itertools::Itertools;
-use crate::aoc::{Puzzle, read_input};
+use crate::aoc::Puzzle;
 
 pub struct Day04;
 

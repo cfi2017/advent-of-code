@@ -2,7 +2,7 @@ use std::iter::Sum;
 use std::str::FromStr;
 use euclid::default::Vector3D;
 use tinyvec::ArrayVec;
-use crate::aoc::{Puzzle, read_input};
+use crate::aoc::Puzzle;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {

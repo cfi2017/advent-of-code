@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use crate::aoc::{Puzzle, read_input};
+use crate::aoc::Puzzle;
 
 pub struct Day06;
 

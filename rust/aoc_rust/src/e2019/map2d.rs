@@ -1,15 +1,19 @@
-use std::ops::{Div, Sub};
+use std::ops::{Add, AddAssign, Div, Sub};
 use crate::e2019::vec2::Vec2;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Position {
-    x: i64,
-    y: i64,
+    pub x: i64,
+    pub y: i64,
 }
 
 impl Position {
     pub fn new(x: i64, y: i64) -> Position {
         Position { x, y }
+    }
+
+    pub fn invert(self) -> Position {
+        Position::new(self.y, self.x)
     }
 }
 
@@ -32,6 +36,23 @@ impl Div<i64> for Position {
             x: (self.x / rhs),
             y: (self.y / rhs),
         }
+    }
+}
+
+impl Add<Position> for Position {
+    type Output = Position;
+
+    fn add(self, rhs: Position) -> Self::Output {
+        Position {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl AddAssign<Position> for Position {
+    fn add_assign(&mut self, rhs: Position) {
+        *self = *self + rhs;
     }
 }
 
@@ -69,6 +90,14 @@ impl Map2D {
         let width = self.map[0].len();
         let height = self.map.len();
         (0..width).flat_map(move |x| (0..height).map(move |y| Position::new(x as i64, y as i64)))
+    }
+
+    pub fn width(&self) -> usize {
+        self.map[0].len()
+    }
+
+    pub fn height(&self) -> usize {
+        self.map.len()
     }
 
     pub fn get(&self, pos: Position) -> char {

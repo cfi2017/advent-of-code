@@ -1,4 +1,5 @@
-use crate::aoc::{parse_ints, Puzzle, read_input};
+use crate::aoc::Puzzle;
+use crate::utils::input::parse_ints;
 
 pub struct Day07;
 

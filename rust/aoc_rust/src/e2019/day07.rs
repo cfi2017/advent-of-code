@@ -1,7 +1,7 @@
 use convert_base::Convert;
 use itertools::Itertools;
 use crate::aoc::Puzzle;
-use crate::e2019::state_machine::StateMachine;
+use crate::e2019::state_machine::{QueueIO, StateMachine};
 
 pub struct Day07;
 
@@ -19,12 +19,13 @@ impl Puzzle<StateMachine, i64, i64, 2019, 7> for Day07 {
             let machine = input.clone();
             let mut value = 0;
             for phase in phases {
+                let mut io = QueueIO::new();
                 let mut machine = machine.clone();
                 // push in reverse order because we pop from the end
-                machine.input.push_back(*phase);
-                machine.input.push_back(value);
-                machine.run();
-                value = machine.output.pop().unwrap();
+                io.input.push_back(*phase);
+                io.input.push_back(value);
+                machine.run(&mut io);
+                value = io.output.pop().unwrap();
             }
             if value > max {
                 max = value;
@@ -40,18 +41,19 @@ impl Puzzle<StateMachine, i64, i64, 2019, 7> for Day07 {
             //println!("phases: {:?}", phases);
             let mut machines = Vec::new();
             for phase in phases {
-                let mut machine = input.clone();
-                machine.input.push_back(*phase);
-                machines.push(machine);
+                let machine = input.clone();
+                let mut io = QueueIO::new();
+                io.input.push_back(*phase);
+                machines.push((machine, io));
             }
             let mut value = 0;
             let mut i = 0;
             loop {
-                let mut machine = &mut machines[i];
-                machine.input.push_back(value);
-                machine.run_until_output_or_complete();
+                let (machine, io) = &mut machines[i];
+                io.input.push_back(value);
+                machine.run_until_output_or_complete(io);
                 // get last output without popping it
-                value = *machine.output.last().unwrap();
+                value = *io.output.last().unwrap();
                 if machine.is_done() && i == 4 {
                     break;
                 }

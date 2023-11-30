@@ -1,5 +1,5 @@
-use crate::aoc::{parse_ints, Puzzle, read_input};
-use crate::e2019::state_machine::StateMachine;
+use crate::aoc::Puzzle;
+use crate::e2019::state_machine::{QueueIO, StateMachine};
 
 pub struct Day02;
 impl Puzzle<StateMachine, i64, i64, 2019, 2> for Day02 {
@@ -11,7 +11,7 @@ impl Puzzle<StateMachine, i64, i64, 2019, 2> for Day02 {
     fn solve_a(&self, mut machine: StateMachine) -> i64 {
         machine.set_state(1, 12);
         machine.set_state(2, 2);
-        machine.run();
+        machine.run(&mut QueueIO::new());
         machine.get_state(0)
     }
 
@@ -21,7 +21,7 @@ impl Puzzle<StateMachine, i64, i64, 2019, 2> for Day02 {
                 let mut machine = machine.clone();
                 machine.set_state(1, noun);
                 machine.set_state(2, verb);
-                machine.run();
+                machine.run(&mut QueueIO::new());
                 if machine.get_state(0) == 19690720 {
                     return 100 * noun + verb;
                 }

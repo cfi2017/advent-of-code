@@ -1,4 +1,4 @@
-use crate::aoc::{Puzzle, read_input};
+use crate::aoc::Puzzle;
 
 #[derive(Clone)]
 pub struct Input {

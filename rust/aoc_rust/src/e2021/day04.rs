@@ -1,5 +1,5 @@
-use std::ops::{IndexMut};
-use crate::aoc::{Puzzle, read_input};
+use std::ops::IndexMut;
+use crate::aoc::Puzzle;
 
 struct Day04;
 

@@ -1,4 +1,4 @@
-use crate::aoc::{Puzzle, read_input};
+use crate::aoc::Puzzle;
 
 pub struct Day01 {}
 impl Puzzle<Vec<i32>, i32, i32, 2021, 1> for Day01 {

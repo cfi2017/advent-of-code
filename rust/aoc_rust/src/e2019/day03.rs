@@ -1,11 +1,9 @@
-use std::cmp::Ordering;
 use std::collections::hash_map::RandomState;
 use std::collections::HashSet;
 use std::hash::{Hash, Hasher};
 use std::ops::{Add, Index};
 use std::str::FromStr;
-use crate::aoc::{Puzzle, read_input};
-use euclid::{Point2D, Size2D};
+use crate::aoc::Puzzle;
 
 pub struct Day03;
 

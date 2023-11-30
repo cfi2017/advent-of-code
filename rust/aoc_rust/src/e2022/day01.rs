@@ -1,6 +1,7 @@
 use std::io::BufRead;
 use itertools::Itertools;
-use crate::aoc::{Puzzle, read_input};
+use crate::aoc::Puzzle;
+use crate::utils::input::read_input;
 
 struct Day01;
 

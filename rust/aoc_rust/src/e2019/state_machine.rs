@@ -1,7 +1,8 @@
 use std::collections::VecDeque;
 use std::fmt::{Display, Formatter};
 use std::ops::{Add, AddAssign, Div, Mul, Sub};
-use crate::aoc::parse_ints;
+use derivative::Derivative;
+use crate::utils::input::parse_ints;
 
 enum ParameterMode {
     Immediate,
@@ -144,14 +145,12 @@ pub enum DisplayMode {
     Proper
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct StateMachine {
     state: Vec<i64>,
     position: usize,
     done: bool,
     display: DisplayMode,
-    pub input: VecDeque<i64>,
-    pub output: Vec<i64>,
     relative_base: i64,
 }
 
@@ -162,8 +161,6 @@ impl From<&str> for StateMachine {
             position: 0,
             done: false,
             display: DisplayMode::Proper,
-            input: VecDeque::new(),
-            output: Vec::new(),
             relative_base: 0,
         };
         machine.state.resize(10000, 0);
@@ -180,7 +177,8 @@ impl Display for StateMachine {
         // in future iterations display the output vector instead.
         match self.display {
             DisplayMode::Primitive => Display::fmt(&self.state[0], f),
-            DisplayMode::Proper => Display::fmt(&self.output.last().unwrap(), f),
+            DisplayMode::Proper => unimplemented!()
+            // DisplayMode::Proper => Display::fmt(&self.output.last().unwrap(), f),
         }
     }
 }
@@ -188,26 +186,26 @@ impl Display for StateMachine {
 impl StateMachine
 {
 
-    pub fn run(&mut self) {
+    pub fn run(&mut self, io: &mut dyn IO) {
         if self.done {
             return
         }
         loop {
-            self.next();
+            self.next(io);
             if self.done {
                 break
             }
         }
     }
 
-    pub(crate) fn run_until_output_or_complete(&mut self) {
+    pub(crate) fn run_until_output_or_complete(&mut self, io: &mut dyn IO) {
         if self.done {
             return
         }
         loop {
-            let output_len = self.output.len();
-            self.next();
-            if self.done || self.output.len() > output_len {
+            // let output_len = self.output.len();
+            self.next(io);
+            if self.done || io.has_output() {
                 break
             }
         }
@@ -225,7 +223,7 @@ impl StateMachine
         self.state[idx] = value;
     }
 
-    pub fn next(&mut self) {
+    pub fn next(&mut self, io: &mut dyn IO) {
         if self.done {
             return
         }
@@ -244,11 +242,11 @@ impl StateMachine
             Instruction::Input(to) => {
                 // println!("trying to read input");
                 let y = to.resolve_pos(&self.state, self.relative_base) as usize;
-                self.state[y] = self.input.pop_front().expect("looked for input where there was none");
+                self.state[y] = io.read();
                 self.position += 2;
             }
             Instruction::Output(from) => {
-                self.output.push(from.resolve(&self.state, self.relative_base));
+                io.write(from.resolve(&self.state, self.relative_base));
                 self.position += 2;
             }
             Instruction::Quit => {
@@ -294,3 +292,85 @@ impl StateMachine
         }
     }
 }
+
+pub trait IO {
+    fn read(&mut self) -> i64;
+    fn write(&mut self, value: i64);
+    fn has_output(&self) -> bool {
+        unimplemented!()
+    }
+    fn push_input(&mut self) -> i64 {
+        unimplemented!()
+    }
+
+    fn pop_output(&mut self) -> i64 {
+        unimplemented!()
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct QueueIO {
+    pub input: VecDeque<i64>,
+    pub output: Vec<i64>,
+}
+
+impl QueueIO {
+    pub fn new() -> Self {
+        Default::default()
+    }
+}
+
+impl IO for QueueIO {
+    fn read(&mut self) -> i64 {
+        self.input.pop_front().expect("looked for input where there was none")
+    }
+
+    fn write(&mut self, value: i64) {
+        self.output.push(value);
+    }
+
+    fn has_output(&self) -> bool {
+        !self.output.is_empty()
+    }
+
+    fn push_input(&mut self) -> i64 {
+        self.input.push_back(0);
+        0
+    }
+
+    fn pop_output(&mut self) -> i64 {
+        self.output.pop().expect("looked for output where there was none")
+    }
+}
+
+pub enum IOOperation<'v> {
+    Read(&'v mut Option<i64>),
+    Write(i64)
+}
+
+pub struct AsyncIO<'a> {
+    handler: Box<dyn FnMut(IOOperation) -> anyhow::Result<()> + 'a>,
+}
+
+impl <'a> AsyncIO<'a> {
+    pub fn new<F>(handler: F) -> Self
+        where F: FnMut(IOOperation) -> anyhow::Result<()> + 'a
+    {
+        Self {
+            handler: Box::new(handler)
+        }
+    }
+}
+
+impl <'a> IO for AsyncIO<'a> {
+    fn read(&mut self) -> i64 {
+        let mut result = None;
+        (self.handler)(IOOperation::Read(&mut result)).expect("failed to read");
+        result.expect("failed to read")
+    }
+
+    fn write(&mut self, value: i64) {
+        (self.handler)(IOOperation::Write(value)).expect("failed to write");
+    }
+}
+

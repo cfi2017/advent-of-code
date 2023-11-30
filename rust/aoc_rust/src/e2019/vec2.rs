@@ -1,4 +1,4 @@
-use std::ops::Index;
+use std::ops::{Index, IndexMut};
 
 impl<T> From<Vec<Vec<T>>> for Vec2<T> {
     fn from(v: Vec<Vec<T>>) -> Self {
@@ -24,7 +24,17 @@ impl <T> Index<usize> for Vec2<T> {
     }
 }
 
+impl <T> IndexMut<usize> for Vec2<T> {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.0[index]
+    }
+}
+
 impl <T> Vec2<T> {
+
+    pub fn push(&mut self, i: Vec<T>) {
+        self.0.push(i);
+    }
     pub fn iter(&self) -> impl Iterator<Item=&Vec<T>> {
         self.0.iter()
     }

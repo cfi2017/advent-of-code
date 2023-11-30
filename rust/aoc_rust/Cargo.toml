@@ -10,10 +10,11 @@ proc-macro2 = "1.0.67"
 
 [dependencies]
 aoc-client = "0.2.0"
+inventory = "0.3"
 aocf = {version = "0.1.18", features = ["html_parsing"]}
 aoc-runner = "0.3.0"
 aoc-runner-derive = "0.3.0"
-itertools = "0.11.0"
+itertools = "0.12.0"
 euclid = "0.22.7"
 tinyvec = "1.6.0"
 thiserror = "1.0.48"
@@ -22,6 +23,9 @@ anyhow = "1.0.75"
 convert-base = "1.1.2"
 radix_fmt = "1.0.0"
 num = "0.4.1"
+derivative = "2.2.0"
+good_lp = "1.7.0"
+lazy_static = "1.4.0"
 
 [[bench]]
 name = "bench_main"

@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::aoc::{Puzzle, read_input};
+use crate::aoc::Puzzle;
 use crate::e2021::day02::submarine::{AdvancedSubmarine, SimpleSubmarine, Submarine};
 
 #[derive(Copy, Clone, Debug)]

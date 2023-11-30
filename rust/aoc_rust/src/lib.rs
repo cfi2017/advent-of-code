@@ -8,7 +8,7 @@ pub mod e2022;
 pub mod aoc;
 
 mod playground;
-pub mod registry;
+pub mod utils;
 
 extern crate aoc_runner;
 #[macro_use]
