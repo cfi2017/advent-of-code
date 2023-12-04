@@ -1,4 +1,4 @@
-#![cfg(target_os = "windows")]
+#![cfg(feature = "experimental")]
 use std::collections::HashMap;
 use std::str::FromStr;
 use crate::aoc::Puzzle;

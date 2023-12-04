@@ -8,6 +8,10 @@ edition = "2021"
 criterion = {version = "0.3", features = ["html_reports"]}
 proc-macro2 = "1.0.67"
 
+[features]
+default = []
+experimental = []
+
 [dependencies]
 aoc-client = "0.2.0"
 inventory = "0.3"
