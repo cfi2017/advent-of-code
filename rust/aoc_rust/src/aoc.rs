@@ -1,9 +1,10 @@
+use std::any::TypeId;
 use lazy_static::lazy_static;
 use crate::utils::input;
 use std::sync::Mutex;
 use std::collections::HashMap;
 
-pub trait Puzzle<I, R1, R2, const Y: i32, const D: i32>: Send
+pub trait Puzzle<I, R1, R2, const Y: i32, const D: i32>: Send + Sync
     where I: Clone,
           R1: std::fmt::Display,
           R2: std::fmt::Display,
@@ -33,83 +34,15 @@ pub trait Puzzle<I, R1, R2, const Y: i32, const D: i32>: Send
     fn solve_b(&self, input: I) -> R2;
 }
 
-
-lazy_static! {
-    static ref PUZZLE_REGISTRY: Mutex<HashMap<(i32, i32), Box<dyn AnyPuzzle>>> = Mutex::new(HashMap::new());
-}
-
-pub trait AnyPuzzle: Send {
-    fn run(&self);
-
-    fn year_day(&self) -> (i32, i32);
-}
-
-impl<I, R1, R2, const Y: i32, const D: i32> AnyPuzzle for dyn Puzzle<I, R1, R2, Y, D>
-    where I: Clone,
-          R1: std::fmt::Display,
-          R2: std::fmt::Display,
-{
-    fn run(&self) {
-        self.run();
-    }
-
-    fn year_day(&self) -> (i32, i32) {
-        self.year_day()
-    }
-
-}
-
+// add_test macro
 #[macro_export]
-macro_rules! aoc_day {
-    (year = $year:expr, day = $day:expr,
-     fn sanitize_input($input:ident : &str) -> $input_type:ty {
-        $($sanitize_body:tt)*
-    }
-    fn part_one($part_one_input:ident : $input_type_a:ty) -> $part_one_output:ty {
-        $($part_one_body:tt)*
-    }
-    fn part_two($part_two_input:ident : $input_type_b:ty) -> $part_two_output:ty {
-        $($part_two_body:tt)*
-    }) => {
-        struct PuzzleDay;
-
-        impl Puzzle<$input_type, $part_one_output, (), $year, $day> for PuzzleDay {
-            fn sanitize_input(&self, $input: &str) -> $input_type {
-                $($sanitize_body)*
-            }
-
-            fn solve_a(&self, $part_one_input: $input_type_a) -> $part_one_output {
-                $($part_one_body)*
-            }
-
-            fn solve_b(&self, $part_two_input: $input_type_b) -> $part_two_output {
-                $($part_two_body)*
-            }
-        }
-        {
-            use std::any::Any;
-            let mut registry = PUZZLE_REGISTRY.lock().unwrap();
-            registry.insert(($year, $day), Box::new(PuzzleDay) as Box<dyn AnyPuzzle>);
+macro_rules! add_test {
+    ($name:ident, $part:ident, $input:expr, $expected:expr) => {
+        #[test]
+        fn $name() {
+            let input = $input;
+            let input = PuzzleDay.sanitize_input(input);
+            assert_eq!(PuzzleDay.$part(input.clone()), $expected);
         }
     };
 }
-
-pub fn run_year(year: i32) {
-    let registry = PUZZLE_REGISTRY.lock().unwrap();
-    for (&(puzzle_year, _), puzzle) in registry.iter() {
-        if puzzle_year == year {
-            puzzle.run();
-        }
-    }
-}
-
-pub fn run_day(year: i32, day: i32) {
-    let registry = PUZZLE_REGISTRY.lock().unwrap();
-    if let Some(puzzle) = registry.get(&(year, day)) {
-        puzzle.run();
-    } else {
-        println!("Puzzle for Year {}, Day {} not found.", year, day);
-    }
-}
-
-

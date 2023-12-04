@@ -1,6 +1,4 @@
 use crate::aoc::Puzzle;
-use crate::e2019::day01::Day01;
-use crate::e2019::day02::Day02;
 use crate::e2019::day03::Day03;
 use crate::e2019::day04::Day04;
 use crate::e2019::day05::Day05;
@@ -37,8 +35,8 @@ mod map2d;
 
 pub fn run() {
     // todo: day 1 as puzzle format
-    Day01.run();
-    Day02.run();
+    day01::PuzzleDay.run();
+    day02::PuzzleDay.run();
     // todo: fix day 3
     // day 3 is also very slow
     Day03.run();

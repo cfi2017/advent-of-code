@@ -5,6 +5,7 @@ pub mod e2018;
 pub mod e2019;
 pub mod e2021;
 pub mod e2022;
+pub mod e2023;
 pub mod aoc;
 
 mod playground;
