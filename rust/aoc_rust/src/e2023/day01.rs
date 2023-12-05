@@ -79,11 +79,7 @@ const TOKEN_TABLE: [u8; 26] = [
     0, 0, 0, 0, 1, 8, 13, 7, 10, 0, 0, 0, 0, 4, 0, 0, 0, 2, 12, 5, 9, 11, 6, 3, 0, 0
 ];
 
-fn parse_line(line: &String) -> Vec<i32> {
-    line.chars().filter(|c| c.is_digit(10)).map(|c| (c as u8 - 48) as i32).collect::<Vec<i32>>()
-}
-
-fn simd_sum_from_iterator<I>(mut data_iter: I) -> u32
+fn simd_sum_from_iterator<I>(data_iter: I) -> u32
     where
         I: Iterator<Item=u8>,
 {
@@ -106,8 +102,8 @@ fn simd_sum_from_iterator<I>(mut data_iter: I) -> u32
     }
 
     // Handle the remainder
-    for i in 0..buffer_index {
-        sum += buffer[i] as u32;
+    for i in buffer {
+        sum += i as u32;
     }
 
     sum
