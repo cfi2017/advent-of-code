@@ -1,4 +1,3 @@
-use std::iter::Sum;
 use std::str::FromStr;
 use euclid::default::Vector3D;
 use tinyvec::ArrayVec;
@@ -79,17 +78,6 @@ impl Moons {
         }
     }
 
-    // todo: bugs if two bodies have the same position on an axis
-    #[deprecated]
-    fn step_gravity_sort(&mut self) {
-        let len = self.0.len() as i32;
-        self.0.sort_by_key(|moon| moon.position.x);
-        self.0.iter_mut().enumerate().for_each(|(i, moon)| moon.velocity.x = (len - i as i32 - 1) - i as i32);
-        self.0.sort_by_key(|moon| moon.position.y);
-        self.0.iter_mut().enumerate().for_each(|(i, moon)| moon.velocity.y = (len - i as i32 - 1) - i as i32);
-        self.0.sort_by_key(|moon| moon.position.z);
-        self.0.iter_mut().enumerate().for_each(|(i, moon)| moon.velocity.z = (len - i as i32 - 1) - i as i32);
-    }
     fn step(&mut self) {
         // apply gravity (of other moons) to each moon
         self.step_gravity_simple();
@@ -108,19 +96,6 @@ impl Moons {
 
     fn total_energy(&self) -> u64 {
         self.0.iter().map(|moon| moon.energy()).sum()
-    }
-
-    fn find_cycle_brute_force(&mut self) -> u64 {
-        let mut steps = 0;
-        let initial_state = self.clone();
-        loop {
-            self.step();
-            steps += 1;
-            if self == &initial_state {
-                break
-            }
-        }
-        steps
     }
 
     // lets do this less shitty
@@ -192,9 +167,9 @@ pub fn find_cycle(positions: Vec<i32>) -> u64 {
         gravity_step_simple(&mut bodies);
 
         // apply velocity
-        for i in 0..bodies.len() {
+        for (a, b) in &mut bodies {
             // for each body add velocity to position
-            bodies[i].0 += bodies[i].1;
+            *a += *b;
         }
 
         steps += 1;

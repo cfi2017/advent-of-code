@@ -14,27 +14,27 @@ pub struct Point2D {
 }
 
 impl Point2D {
-    const fn zero() -> Self {
+    pub const fn zero() -> Self {
         Point2D { x: 0, y: 0 }
     }
 
-    const fn one() -> Self {
+    pub const fn one() -> Self {
         Point2D { x: 1, y: 1 }
     }
 
-    const fn up() -> Self {
+    pub const fn up() -> Self {
         Point2D { x: 0, y: 1 }
     }
 
-    const fn down() -> Self {
+    pub const fn down() -> Self {
         Point2D { x: 0, y: -1 }
     }
 
-    const fn left() -> Self {
+    pub const fn left() -> Self {
         Point2D { x: -1, y: 0 }
     }
 
-    const fn right() -> Self {
+    pub const fn right() -> Self {
         Point2D { x: 1, y: 0 }
     }
 
@@ -176,7 +176,7 @@ aoc_boilerplate!(2023, 3, sanitize_input, solve_a, solve_b);
 
 #[cfg(test)]
 mod tests {
-    
+
     use crate::add_test;
 
     add_test!(test_solve_a_example, solve_a, r#"467..114..

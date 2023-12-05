@@ -68,7 +68,7 @@ enum Instruction {
     Multiply(Parameter, Parameter, Parameter),
     Input(Parameter),
     Output(Parameter),
-    JNZ(Parameter, Parameter),
+    Jnz(Parameter, Parameter),
     JZ(Parameter, Parameter),
     LT(Parameter, Parameter, Parameter),
     EQ(Parameter, Parameter, Parameter),
@@ -112,7 +112,7 @@ impl From<(usize, i64)> for Instruction {
             4 => Instruction::Output(
                 Parameter::new(modes.pop(), position + 1),
             ),
-            5 => Instruction::JNZ(
+            5 => Instruction::Jnz(
                 Parameter::new(modes.pop(), position + 1),
                 Parameter::new(modes.pop(), position + 2),
             ),
@@ -253,7 +253,7 @@ impl StateMachine
                 self.done = true;
                 self.position += 1;
             }
-            Instruction::JNZ(t, p) => {
+            Instruction::Jnz(t, p) => {
                 if t.resolve(&self.state, self.relative_base) != 0 {
                     self.position = p.resolve(&self.state, self.relative_base) as usize;
                 } else {

@@ -39,12 +39,12 @@ impl Puzzle<HashMap<String, Recipe>, f64, i32, 2019, 14> for Day14 {
         // instrument good_lp
         variables! {
             vars:
-                1 <= ORE;
-                1 <= FUEL;
+                1 <= ore;
+                1 <= fuel;
         }
         let constraints: HashMap<String, (Variable, Recipe)> = input.iter().map(|(name, recipe)| {
             let var = if name == "FUEL" {
-                FUEL
+                fuel
             } else {
                 vars.add(variable().name(name).min(0))
             };
@@ -52,7 +52,7 @@ impl Puzzle<HashMap<String, Recipe>, f64, i32, 2019, 14> for Day14 {
         }).collect();
 
         // we want to minimise ore use
-        let mut problem = vars.minimise(ORE)
+        let mut problem = vars.minimise(ore)
             .using(default_solver);
 
         for (name, (var, recipe)) in &constraints {
@@ -60,7 +60,7 @@ impl Puzzle<HashMap<String, Recipe>, f64, i32, 2019, 14> for Day14 {
                 .map(|(name, q)| {
                     // one of the ingredients is ore
                     if name == "ORE" {
-                        return (ORE, q);
+                        return (ore, q);
                     }
                     return (constraints.get(name).unwrap().0, q)
                 })
@@ -75,10 +75,10 @@ impl Puzzle<HashMap<String, Recipe>, f64, i32, 2019, 14> for Day14 {
         }
 
         // we want 1 fuel
-        problem = problem.with(Expression::from(1).eq(FUEL));
+        problem = problem.with(Expression::from(1).eq(fuel));
 
         let solution = problem.solve().unwrap();
-        solution.value(ORE)
+        solution.value(ore)
     }
 
     fn solve_b(&self, input: HashMap<String, Recipe>) -> i32 {

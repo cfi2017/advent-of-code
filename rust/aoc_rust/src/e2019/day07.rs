@@ -5,7 +5,6 @@ use crate::e2019::state_machine::{QueueIO, StateMachine};
 
 pub struct Day07;
 
-const MAX_PHASE_INT: i32 = 3125; // 5 = 7775
 
 impl Puzzle<StateMachine, i64, i64, 2019, 7> for Day07 {
     fn sanitize_input(&self, input: &str) -> StateMachine {

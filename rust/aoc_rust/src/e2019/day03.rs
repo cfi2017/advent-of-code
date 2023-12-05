@@ -1,16 +1,22 @@
 use std::collections::hash_map::RandomState;
 use std::collections::HashSet;
-use std::hash::{Hash};
+use std::hash::{Hash, Hasher};
 use std::ops::{Add};
 use std::str::FromStr;
 use crate::aoc::Puzzle;
 
 pub struct Day03;
 
-#[derive(Copy, Clone, Debug, Eq, Hash)]
+#[derive(Copy, Clone, Debug, Eq)]
 struct WeightedPoint {
     point: Point,
     weight: i32,
+}
+
+impl Hash for WeightedPoint {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.point.hash(state);
+    }
 }
 
 impl Add for WeightedPoint {
@@ -37,7 +43,7 @@ impl WeightedPoint {
         }
     }
 
-    fn to_point(&self) -> Point {
+    fn to_point(self) -> Point {
         self.point
     }
 }
@@ -88,28 +94,14 @@ impl Instruction {
     fn get_points(&self, start: WeightedPoint) -> (Vec<WeightedPoint>, WeightedPoint) {
         let mut current = start;
         let mut points = Vec::new();
-        let mut mutator: WeightedPoint = WeightedPoint::ZERO;
-        let mut length = 0;
 
-        match self {
-            Instruction::Up(x) => {
-                length = *x;
-                mutator = WeightedPoint::new(0, 1, 1)
-            },
-            Instruction::Down(x) => {
-                length = *x;
-                mutator = WeightedPoint::new(0, -1, 1)
-            }
-            Instruction::Left(x) => {
-                length = *x;
-                mutator = WeightedPoint::new(-1, 0, 1)
-            },
-            Instruction::Right(x) => {
-                length = *x;
-                mutator = WeightedPoint::new(1, 0, 1)
-            }
-
+        let (mutator, length) = match self {
+            Instruction::Up(x) => (WeightedPoint::new(0, 1, 1), *x),
+            Instruction::Down(x) => (WeightedPoint::new(0, -1, 1), *x),
+            Instruction::Left(x) => (WeightedPoint::new(-1, 0, 1), *x),
+            Instruction::Right(x) => (WeightedPoint::new(1, 0, 1), *x),
         };
+
         for _ in 0..length {
             current = current + mutator;
             points.push(current);
@@ -184,8 +176,8 @@ impl Puzzle<(Wire, Wire), i32, i32, 2019, 3> for Day03 {
     }
 
     fn solve_a(&self, input: (Wire, Wire)) -> i32 {
-        let points_a: HashSet<Point, RandomState> = HashSet::from_iter(input.0.get_points().iter().map(WeightedPoint::to_point));
-        let points_b: HashSet<Point, RandomState> = HashSet::from_iter(input.1.get_points().iter().map(WeightedPoint::to_point));
+        let points_a: HashSet<Point, RandomState> = HashSet::from_iter(input.0.get_points().iter().copied().map(WeightedPoint::to_point));
+        let points_b: HashSet<Point, RandomState> = HashSet::from_iter(input.1.get_points().iter().copied().map(WeightedPoint::to_point));
         let intersecting: HashSet<_> = points_a.intersection(&points_b).collect();
         let mut arr: Vec<_> = intersecting.iter().collect();
         arr.sort_by_key(|p1| distance_to_root(p1));
@@ -194,8 +186,8 @@ impl Puzzle<(Wire, Wire), i32, i32, 2019, 3> for Day03 {
     }
 
     fn solve_b(&self, input: (Wire, Wire)) -> i32 {
-        let points_a: HashSet<Point, RandomState> = HashSet::from_iter(input.0.get_points().iter().map(WeightedPoint::to_point));
-        let points_b: HashSet<Point, RandomState> = HashSet::from_iter(input.1.get_points().iter().map(WeightedPoint::to_point));
+        let points_a: HashSet<Point, RandomState> = HashSet::from_iter(input.0.get_points().iter().copied().map(WeightedPoint::to_point));
+        let points_b: HashSet<Point, RandomState> = HashSet::from_iter(input.1.get_points().iter().copied().map(WeightedPoint::to_point));
         let intersecting: HashSet<_> = points_a.intersection(&points_b).collect();
         let points_a = input.0.get_points();
         let points_a: HashSet<&WeightedPoint, RandomState> = HashSet::from_iter(points_a.iter());

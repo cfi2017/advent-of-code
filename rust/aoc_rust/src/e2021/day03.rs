@@ -6,18 +6,6 @@ pub struct Input {
     nums: Vec<u32>,
 }
 
-fn reverse_bits(mut n: i32) -> i32 {
-    let mut rev = 0;
-    while n > 0 {
-        rev <<= 1;
-        if n & 1 == 1 {
-            rev ^= 1;
-        }
-        n >>= 1;
-    }
-    rev
-}
-
 fn bit_mask(bit_length: usize) -> u16 {
     2_u16.pow(bit_length as u32) - 1
 }
@@ -31,8 +19,8 @@ fn calc_gamma(v: &Vec<u32>, length: usize) -> u16 {
     let mut counts = vec![0; length];
     for num in v {
         let mut bit_mask = 1;
-        for i in 0..length {
-            counts[i] += (num & bit_mask) / bit_mask;
+        for i in &mut counts {
+            *i += (num & bit_mask) / bit_mask;
             bit_mask <<= 1;
         }
     }
@@ -49,10 +37,6 @@ fn calc_gamma(v: &Vec<u32>, length: usize) -> u16 {
 
 pub struct Day03;
 impl Day03 {
-
-    fn bit_mask(&self, input: &Input) -> u16 {
-        bit_mask(input.bit_length)
-    }
 
     fn gamma(&self, input: &Input) -> u16 {
         calc_gamma(&input.nums, input.bit_length)

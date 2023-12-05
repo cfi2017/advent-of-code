@@ -11,12 +11,7 @@ pub mod e2022;
 pub mod e2023;
 pub mod aoc;
 
-mod playground;
 pub mod utils;
-
-extern crate aoc_runner;
-#[macro_use]
-extern crate aoc_runner_derive;
 
 aoc_lib! {year = 2022}
 macro_rules! run_year {

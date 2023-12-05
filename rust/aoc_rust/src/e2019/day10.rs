@@ -73,13 +73,11 @@ impl Puzzle<Map2D, i32, i32, 2019, 10> for Day10 {
 
         for pos in &wtf {
             let mut current = station + *pos;
-            let mut i = 0;
 
             while 0 <= current.y && current.y < input.height() as i64 && 0 <= current.x && current.x < input.width() as i64 {
                 if input.get(current) == input.obstacle {
                     let out = current.x * 100 + current.y;
                     todo.push(out);
-                    i += 1;
                 }
                 current += *pos;
             }

@@ -5,13 +5,13 @@ use crate::e2019::vec3::Vec3;
 
 pub struct Day08;
 
-type BASE = i32;
+type Base = i32;
 
-impl Puzzle<Vec3<BASE>, BASE, String, 2019, 8> for Day08 {
-    fn sanitize_input(&self, input: &str) -> Vec3<BASE> {
+impl Puzzle<Vec3<Base>, Base, String, 2019, 8> for Day08 {
+    fn sanitize_input(&self, input: &str) -> Vec3<Base> {
         input.chars()
             .flat_map(|c| c.to_digit(10))
-            .map(|c| c as BASE)
+            .map(|c| c as Base)
             .chunks(25 * 6)
             .into_iter()
             .map(|chunk| {
@@ -24,7 +24,7 @@ impl Puzzle<Vec3<BASE>, BASE, String, 2019, 8> for Day08 {
             }).collect()
     }
 
-    fn solve_a(&self, input: Vec3<BASE>) -> BASE {
+    fn solve_a(&self, input: Vec3<Base>) -> Base {
         // outer vector are layers
         // inner vectors are rows
         // innermost vectors are pixels
@@ -40,10 +40,10 @@ impl Puzzle<Vec3<BASE>, BASE, String, 2019, 8> for Day08 {
         let layer = &input[min_layer];
         let ones = layer.iter().flatten().filter(|&&p| p == 1).count();
         let twos = layer.iter().flatten().filter(|&&p| p == 2).count();
-        (ones * twos) as BASE
+        (ones * twos) as Base
     }
 
-    fn solve_b(&self, input: Vec3<BASE>) -> String {
+    fn solve_b(&self, input: Vec3<Base>) -> String {
         let mut result = input[0].clone();
         for layer in input[1..].iter() {
             for (row, result_row) in layer.iter().zip(result.iter_mut()) {

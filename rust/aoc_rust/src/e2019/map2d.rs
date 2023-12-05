@@ -115,18 +115,3 @@ pub fn gcd(mut m: i64, mut n: i64) -> i64 {
     }
     n.abs()
 }
-pub fn farey(n: i64) -> Vec<Position> {
-    let mut v: Vec<Position> = Vec::new();
-    let mut ab = (0, 1);
-    let mut cd = (1, n);
-    v.push(ab.into());
-
-    while cd.0 < n {
-        let k = (n + ab.1) / cd.1;
-        let ef = (k * cd.0 - ab.0, k * cd.1 - ab.1);
-        ab = cd;
-        cd = ef;
-        v.push(ab.into());
-    }
-    v
-}
