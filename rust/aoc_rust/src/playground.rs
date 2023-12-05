@@ -6,17 +6,17 @@ fn median(mut nums: Vec<i32>) -> Option<i32> {
         return None;
     }
     nums.sort_unstable();
-    return if len % 2 == 0 {
+    if len % 2 == 0 {
         // even
         Some((nums[len / 2] + nums[len / 2 - 1]) / 2)
     } else {
         // odd
         Some(nums[len / 2])
-    };
+    }
 }
 
 fn mode(nums: Vec<i32>) -> Option<i32> {
-    if nums.len() == 0 {
+    if nums.is_empty() {
         return None;
     }
     let mut occurences = HashMap::new();

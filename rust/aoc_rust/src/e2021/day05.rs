@@ -14,7 +14,7 @@ impl FromStr for Point {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let parts: Vec<i32> = s.split(",")
+        let parts: Vec<i32> = s.split(',')
             .map(str::parse::<i32>)
             .map(Result::unwrap)
             .collect();
@@ -64,17 +64,15 @@ impl Line {
                         points.push(Point {x: self.from.x+i, y: self.from.y-i});
                     }
                 }
+            } else if self.from.y < self.to.y {
+                // diagonal line towards bottom left
+                for i in 0..self.from.x-self.to.x {
+                    points.push(Point {x: self.from.x-i, y: self.from.y+i});
+                }
             } else {
-                if self.from.y < self.to.y {
-                    // diagonal line towards bottom left
-                    for i in 0..self.from.x-self.to.x {
-                        points.push(Point {x: self.from.x-i, y: self.from.y+i});
-                    }
-                } else {
-                    // diagonal line towards top left
-                    for i in 0..self.from.x-self.to.x {
-                        points.push(Point {x: self.from.x-i, y: self.from.y-i});
-                    }
+                // diagonal line towards top left
+                for i in 0..self.from.x-self.to.x {
+                    points.push(Point {x: self.from.x-i, y: self.from.y-i});
                 }
             }
         }
@@ -107,7 +105,7 @@ impl FromStr for Line {
 impl Puzzle<Vec<Line>, i32, i32, 2021, 5> for Day05 {
 
     fn sanitize_input(&self, input: &str) -> Vec<Line> {
-        input.split("\n")
+        input.split('\n')
             .map(str::trim)
             .filter(|str| !str.is_empty())
             .map(str::parse::<Line>)

@@ -14,7 +14,7 @@ impl FromStr for Swarm {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let fish = s.split(",")
+        let fish = s.split(',')
             .filter(|s| !s.is_empty())
             .map(str::parse::<i64>)
             .map(Result::unwrap)
@@ -44,14 +44,14 @@ impl Swarm {
     }
 
     fn sum(&self) -> i64 {
-        self.fish.iter().fold(0, |a, b| a + b)
+        self.fish.iter().sum::<i64>()
     }
 }
 
 impl Puzzle<Swarm, i64, i64, 2021, 6> for Day06 {
 
     fn sanitize_input(&self, input: &str) -> Swarm {
-        Swarm::from_str(&input).unwrap()
+        Swarm::from_str(input).unwrap()
     }
 
     fn solve_a(&self, mut input: Swarm) -> i64 {
@@ -76,8 +76,8 @@ mod tests {
     #[test]
     fn test_solve() {
         let input = "3,4,3,1,2";
-        let mut input = Day06.sanitize_input(input);
-        assert_eq!(Day06.solve_a(input.clone()), 5934);
-        assert_eq!(Day06.solve_b(input.clone()), 26984457539);
+        let input = Day06.sanitize_input(input);
+        assert_eq!(Day06.solve_a(input), 5934);
+        assert_eq!(Day06.solve_b(input), 26984457539);
     }
 }

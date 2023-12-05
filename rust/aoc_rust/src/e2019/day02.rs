@@ -12,7 +12,7 @@ impl Puzzle<StateMachine, i64, i64, 2019, 2> for PuzzleDay {
         input.run(&mut QueueIO::new());
         input.get_state(0)
     }
-    fn solve_b(&self, mut input: StateMachine) -> i64 {
+    fn solve_b(&self, input: StateMachine) -> i64 {
         for noun in 0..100 {
             for verb in 0..100 {
                 let mut machine = input.clone();

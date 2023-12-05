@@ -1,14 +1,14 @@
-use std::any::TypeId;
-use lazy_static::lazy_static;
+
+
 use crate::utils::input;
-use std::sync::Mutex;
-use std::collections::HashMap;
-use clap::Parser;
+
+
+
 
 #[macro_export]
 macro_rules! aoc_boilerplate(
     ($year:expr, $day:expr, $sanitize:ident, $solve_a:ident, $solve_b:ident) => {
-        use crate::utils::input;
+        use $crate::utils::input;
         pub fn get_input() -> String {
             input::read_input($year, $day).unwrap()
         }
@@ -25,7 +25,7 @@ macro_rules! aoc_boilerplate(
         }
     };
     ($year:expr, $day:expr, $sanitize_a:ident, $sanitize_b:ident, $solve_a:ident, $solve_b:ident) => {
-        use crate::utils::input;
+        use $crate::utils::input;
         pub fn get_input() -> String {
             input::read_input($year, $day).unwrap()
         }

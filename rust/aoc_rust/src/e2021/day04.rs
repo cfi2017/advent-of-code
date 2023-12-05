@@ -1,4 +1,4 @@
-use std::ops::IndexMut;
+
 use crate::aoc::Puzzle;
 
 struct Day04;
@@ -35,11 +35,9 @@ impl Board {
             let row = self.rows.get_mut(x).unwrap();
             let mut y = 0;
             while y < row.len() {
-                let mut opt_num = row.get_mut(y).unwrap();
-                if opt_num.is_some() {
-                    if n == opt_num.clone().unwrap() {
-                        *opt_num = None;
-                    }
+                let opt_num = row.get_mut(y).unwrap();
+                if opt_num.is_some() && n == (*opt_num).unwrap() {
+                    *opt_num = None;
                 }
                 y += 1;
             }
@@ -55,7 +53,7 @@ impl Board {
     fn sum(&self) -> u32 {
         self.rows.iter().fold(0, |a, row| a + row.iter()
             .fold(0, |aa, b| {
-                return match b {
+                match b {
                     Some(n) => aa + n,
                     None => aa,
                 }
@@ -65,9 +63,9 @@ impl Board {
 
 impl Input {
     fn from(input: &str) -> Input {
-        let mut iter = input.trim().split("\n");
+        let mut iter = input.trim().split('\n');
         // first element is sequence
-        let sequence = iter.next().unwrap().split(",")
+        let sequence = iter.next().unwrap().split(',')
             .map(str::parse::<u32>)
             .map(Result::unwrap)
             .collect();
@@ -88,7 +86,7 @@ impl Input {
                 board.rows.push(line
                     .trim_start()
                     .replace("  ", " ")
-                    .split(" ")
+                    .split(' ')
                     .map(str::parse::<u32>)
                     .map(Result::unwrap).map(Some).collect())
             }
@@ -108,7 +106,7 @@ impl Puzzle<Input, i32, i32, 2021, 4> for Day04 {
         Input::from(input)
     }
 
-    fn solve_a(&self, mut input: Input) -> i32 {
+    fn solve_a(&self, input: Input) -> i32 {
         let mut boards = input.boards.clone();
         for s in input.sequence {
             for board in &mut boards {

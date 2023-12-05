@@ -1,7 +1,7 @@
 use std::collections::hash_map::RandomState;
 use std::collections::HashSet;
-use std::hash::{Hash, Hasher};
-use std::ops::{Add, Index};
+use std::hash::{Hash};
+use std::ops::{Add};
 use std::str::FromStr;
 use crate::aoc::Puzzle;
 
@@ -114,7 +114,7 @@ impl Instruction {
             current = current + mutator;
             points.push(current);
         }
-        return (points, current);
+        (points, current)
     }
 }
 
@@ -151,7 +151,7 @@ impl Wire {
             }
             position = new_position;
         }
-        return points;
+        points
     }
 }
 
@@ -160,7 +160,7 @@ impl FromStr for Wire {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let instructions = s
-            .split(",")
+            .split(',')
             .map(str::parse::<Instruction>)
             .map(Result::unwrap)
             .collect();
@@ -175,12 +175,12 @@ impl FromStr for Wire {
 impl Puzzle<(Wire, Wire), i32, i32, 2019, 3> for Day03 {
 
     fn sanitize_input(&self, input: &str) -> (Wire, Wire) {
-        let wires: Vec<Wire> = input.split("\n")
+        let wires: Vec<Wire> = input.split('\n')
             .filter(|x| !x.is_empty())
             .map(str::parse::<Wire>)
             .map(Result::unwrap)
             .collect();
-        return (wires[0].clone(), wires[1].clone())
+        (wires[0].clone(), wires[1].clone())
     }
 
     fn solve_a(&self, input: (Wire, Wire)) -> i32 {
@@ -188,9 +188,9 @@ impl Puzzle<(Wire, Wire), i32, i32, 2019, 3> for Day03 {
         let points_b: HashSet<Point, RandomState> = HashSet::from_iter(input.1.get_points().iter().map(WeightedPoint::to_point));
         let intersecting: HashSet<_> = points_a.intersection(&points_b).collect();
         let mut arr: Vec<_> = intersecting.iter().collect();
-        arr.sort_by(|p1, p2| distance_to_root(p1).cmp(&distance_to_root(p2)));
-        let result = arr.get(0).unwrap();
-        return distance_to_root(result);
+        arr.sort_by_key(|p1| distance_to_root(p1));
+        let result = arr.first().unwrap();
+        distance_to_root(result)
     }
 
     fn solve_b(&self, input: (Wire, Wire)) -> i32 {
@@ -208,12 +208,12 @@ impl Puzzle<(Wire, Wire), i32, i32, 2019, 3> for Day03 {
             let points_b = points_b.iter().filter(|p| p.point == **pi).map(|p| p.weight).min();
             points_a.unwrap() + points_b.unwrap()
         }).min().unwrap();
-        return b;
+        b
     }
 }
 
 fn distance_to_root(p: &Point) -> i32 {
-    return distance(p, &Point::ZERO)
+    distance(p, &Point::ZERO)
 }
 
 fn distance(a: &Point, b: &Point) -> i32 {

@@ -13,7 +13,7 @@ impl Puzzle<Vec<i32>, i32, i32, 2021, 7> for Day07 {
         input.sort();
         let mid = input.len() / 2;
         let median = input[mid];
-        input.iter().map(|x| (*x - median).abs()).fold(0, |a, b| a + b)
+        input.iter().map(|x| (*x - median).abs()).sum::<i32>()
     }
 
     fn solve_b(&self, input: Vec<i32>) -> i32 {

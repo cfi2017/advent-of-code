@@ -1,7 +1,7 @@
 use std::ops::{Add, Sub};
 use std::str::FromStr;
 use itertools::Itertools;
-use crate::aoc::Puzzle;
+
 use crate::aoc_boilerplate;
 
 pub struct PuzzleDay;
@@ -79,14 +79,14 @@ pub struct Grid<T: Clone> {
 
 impl<T: Clone> Grid<T> {
     fn get(&self, point: Point2D) -> Option<T> {
-        self.data.get(point.y as usize).map(|row| row.get(point.x as usize)).flatten().cloned()
+        self.data.get(point.y as usize).and_then(|row| row.get(point.x as usize)).cloned()
     }
 }
 
 impl FromStr for Grid<u8> {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let data = s.split("\n")
+        let data = s.split('\n')
             .filter(|x| !x.is_empty())
             .map(|x| x.bytes().collect())
             .collect();
@@ -142,7 +142,7 @@ aoc_boilerplate!(2023, 3, sanitize_input, solve_a, solve_b);
     }
 
     pub fn solve_a(input: Grid<u8>) -> i32 {
-        let mut nums = get_nums(&input);
+        let nums = get_nums(&input);
         let width = input.data[0].len();
         let height = input.data.len();
 
@@ -154,18 +154,17 @@ aoc_boilerplate!(2023, 3, sanitize_input, solve_a, solve_b);
     }
 
     pub fn solve_b(input: Grid<u8>) -> i32 {
-        let mut nums = get_nums(&input);
+        let nums = get_nums(&input);
         let width = input.data[0].len();
         let height = input.data.len();
 
         let map = nums.iter()
-            .map(|(num, point, len)| gen_border_positions(*point, *len, width, height)
+            .flat_map(|(num, point, len)| gen_border_positions(*point, *len, width, height)
                 .into_iter()
                 .filter(|p| {
                     input.get(*p).is_some_and(|c| c == b'*')
                 })
-                .map(|p| (p, (*num, *point)))
-            ).flatten()
+                .map(|p| (p, (*num, *point))))
             .into_group_map();
 
         map.iter()
@@ -177,7 +176,7 @@ aoc_boilerplate!(2023, 3, sanitize_input, solve_a, solve_b);
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    
     use crate::add_test;
 
     add_test!(test_solve_a_example, solve_a, r#"467..114..

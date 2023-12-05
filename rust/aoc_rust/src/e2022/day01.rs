@@ -17,7 +17,7 @@ impl Puzzle<Vec<String>, i32, i32, 2022, 1> for Day01 {
     fn solve_a(&self, elves: Vec<String>) -> i32 {
         elves.iter()
             .map(|elf: &String| elf
-                .split("\n")
+                .split('\n')
                 .map(|item| str::parse::<i32>(item).unwrap())
                 .sum::<i32>()
             ).sorted()
@@ -29,7 +29,7 @@ impl Puzzle<Vec<String>, i32, i32, 2022, 1> for Day01 {
     fn solve_b(&self, elves: Vec<String>) -> i32 {
         elves.iter()
             .map(|elf: &String| elf
-                .split("\n")
+                .split('\n')
                 .map(|item| str::parse::<i32>(item).unwrap())
                 .sum::<i32>()
             ).sorted()

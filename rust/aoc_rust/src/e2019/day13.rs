@@ -1,7 +1,7 @@
-use std::cell::RefCell;
+
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use std::sync::Arc;
+
 use crate::aoc::Puzzle;
 use crate::e2019::map2d::Position;
 use crate::e2019::state_machine::{AsyncIO, IOOperation, QueueIO, StateMachine};

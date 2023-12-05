@@ -62,8 +62,8 @@ impl Day03 {
 impl Puzzle<Input, i32, i32, 2021, 3> for Day03 {
 
     fn sanitize_input(&self, input: &str) -> Input {
-        let bit_length = input.splitn(2, "\n").nth(0).unwrap().chars().count();
-        let nums = input.split("\n").filter(|s| !s.is_empty())
+        let bit_length = input.split('\n').nth(0).unwrap().chars().count();
+        let nums = input.split('\n').filter(|s| !s.is_empty())
             .map(|s| u32::from_str_radix(s, 2))
             .map(Result::unwrap)
             .collect();
@@ -92,9 +92,9 @@ impl Puzzle<Input, i32, i32, 2021, 3> for Day03 {
         let mut result = input.nums.clone();
         let mut pos_mask = 2_u32.pow(input.bit_length as u32 - 1);
         for _ in 0..input.bit_length {
-            result = result.into_iter().filter(|n| {
+            result.retain(|n| {
                 n & pos_mask == gamma & pos_mask
-            }).collect();
+            });
             pos_mask >>= 1;
             gamma = calc_gamma(&result, input.bit_length) as u32;
             if result.len() == 1 {
@@ -107,7 +107,7 @@ impl Puzzle<Input, i32, i32, 2021, 3> for Day03 {
         let mut result = input.nums.clone();
         let mut pos_mask = 2_u32.pow(input.bit_length as u32 - 1);
         for _ in 0..input.bit_length {
-            result = result.into_iter().filter(|n| n & pos_mask == epsilon & pos_mask).collect();
+            result.retain(|n| n & pos_mask == epsilon & pos_mask);
             pos_mask >>= 1;
             epsilon = invert(calc_gamma(&result, input.bit_length), input.bit_length) as u32;
             if result.len() == 1 {
@@ -128,12 +128,10 @@ mod tests {
     fn test_solve() {
         let input = Input {
             bit_length: 5,
-            nums: vec![
-                00100, 11110, 10110,
+            nums: [00100, 11110, 10110,
                 10111, 10101, 01111,
                 00111, 11100, 10000,
-                11001, 00010, 01010,
-            ].iter().map(|i| format!("{:05}", i))
+                11001, 00010, 01010].iter().map(|i| format!("{:05}", i))
                 .map(|s| u32::from_str_radix(s.as_str(), 2))
                 .map(Result::unwrap)
                 .collect()

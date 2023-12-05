@@ -4,7 +4,7 @@ pub struct Day01 {}
 impl Puzzle<Vec<i32>, i32, i32, 2021, 1> for Day01 {
 
     fn sanitize_input(&self, input: &str) -> Vec<i32> {
-        input.split("\n")
+        input.split('\n')
             .filter(|s| !s.is_empty())
             .map(str::parse::<i32>)
             .map(Result::unwrap)

@@ -82,7 +82,7 @@ impl Map2D {
             return None;
         }
         let diff = b - a;
-        let minimum_vec = diff / gcd(diff.x as i64, diff.y as i64);
+        let minimum_vec = diff / gcd(diff.x, diff.y);
         Some(minimum_vec)
     }
 

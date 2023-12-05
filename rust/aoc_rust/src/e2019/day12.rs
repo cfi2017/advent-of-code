@@ -180,7 +180,7 @@ pub fn gravity_step_sort(bodies: &mut [(i32, i32)]) {
     bodies.iter_mut().enumerate().for_each(|(i, (_, v))| *v += (len - i as i32 - 1) - i as i32);
 }
 
-pub fn find_cycle(mut positions: Vec<i32>) -> u64 {
+pub fn find_cycle(positions: Vec<i32>) -> u64 {
     // pair of positions and velocities
     let mut bodies: Vec<(i32, i32)> = positions.iter().map(|&p| (p, 0)).collect();
     // let mut velocities = vec![0; positions.len()];

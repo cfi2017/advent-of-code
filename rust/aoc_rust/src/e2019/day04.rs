@@ -16,7 +16,7 @@ impl Puzzle<RangeInclusive<i32>, i32, i32, 2019, 4> for Day04 {
         for x in input.map(|x| x.to_string()) {
             if x.as_bytes().windows(2).fold_while(false, |r, b| {
                 if b[0] <= b[1] {
-                    return itertools::FoldWhile::Done(false);
+                    itertools::FoldWhile::Done(false)
                 } else {
                     itertools::FoldWhile::Continue(r || b[0] == b[1])
                 }

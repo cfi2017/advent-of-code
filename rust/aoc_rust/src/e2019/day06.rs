@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::iter;
-use query_map::QueryMap;
+
 use crate::aoc::Puzzle;
 
 pub struct Day06;
@@ -37,7 +37,7 @@ impl Puzzle<Orbits, i32, i32, 2019, 6> for Day06 {
             orbits.entry(a).or_insert(Vec::new()).push(b);
         }
         Orbits {
-            orbits: orbits,
+            orbits,
             cache: HashMap::new(),
         }
     }

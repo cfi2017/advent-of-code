@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
-use crate::aoc::Puzzle;
+
 use crate::aoc_boilerplate;
 
 pub struct PuzzleDay;
@@ -68,7 +68,7 @@ pub fn solve_b(input: Vec<Scratchcard>) -> i32 {
 #[cfg(test)]
 mod tests {
     use crate::add_test;
-    use super::*;
+    
 
     add_test!(test_solve_a_example, solve_a, r#"Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
 Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19

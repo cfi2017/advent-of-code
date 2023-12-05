@@ -14,17 +14,17 @@ impl FromStr for Command {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut parts = s.trim().split(" ");
+        let mut parts = s.trim().split(' ');
         let command = parts.next().ok_or(String::from("error splitting input values"))?;
         let value = parts.next()
             .ok_or(String::from("error splitting input values"))?;
         let value: i32 = str::parse(value).map_err(|_| String::from("error parsing value"))?;
-        return match command {
+        match command {
             "forward" => Ok(Command::Forward(value)),
             "down" => Ok(Command::Down(value)),
             "up" => Ok(Command::Up(value)),
             _ => Err(String::from("invalid command"))
-        };
+        }
     }
 }
 
@@ -113,7 +113,7 @@ mod submarine {
 impl Puzzle<Vec<Command>, i32, i32, 2021, 2> for Day02 {
 
     fn sanitize_input(&self, input: &str) -> Vec<Command> {
-        input.split("\n").filter(|s| !s.is_empty())
+        input.split('\n').filter(|s| !s.is_empty())
             .map(str::parse::<Command>)
             .map(Result::unwrap)
             .collect()

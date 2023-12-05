@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::str::FromStr;
-use crate::aoc::Puzzle;
+
 use crate::aoc_boilerplate;
 
 pub struct PuzzleDay;
@@ -93,7 +93,7 @@ impl Game {
 
 aoc_boilerplate!(2023, 2, sanitize_input, solve_a, solve_b);
 pub fn sanitize_input(input: &str) -> Vec<Game> {
-    input.split("\n")
+    input.split('\n')
         .filter(|x| !x.is_empty())
         .map(str::parse::<Game>)
         .map(Result::unwrap).collect()
@@ -110,7 +110,7 @@ pub fn solve_b(games: Vec<Game>) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    
     use crate::add_test;
 
     #[test]
@@ -120,7 +120,7 @@ Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"#;
-        let games = super::sanitize_input(input);
+        let _games = super::sanitize_input(input);
     }
 
     add_test!(test_solve_a_example, solve_a, r#"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
-use good_lp::{Constraint, default_solver, Expression, Solution, SolverModel, Variable, variable, variables};
-use good_lp::constraint::leq;
+use good_lp::{default_solver, Expression, Solution, SolverModel, Variable, variable, variables};
+
 use crate::aoc::Puzzle;
 
 pub struct Day14;

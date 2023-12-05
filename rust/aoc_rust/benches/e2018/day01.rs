@@ -1,6 +1,6 @@
 
 use criterion::{black_box, criterion_group, Criterion};
-use std::fs::read_to_string;
+
 use aoc_rust::e2018::day01::Day01;
 use aoc_rust::aoc::Puzzle;
 

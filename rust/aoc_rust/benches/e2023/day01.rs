@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, Criterion};
-use std::fs::read_to_string;
-use aoc_rust::aoc::Puzzle;
+
+
 use aoc_rust::e2023::day01;
 
 pub fn solve_benchmark(c: &mut Criterion) {

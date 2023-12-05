@@ -1,8 +1,8 @@
 use std::str::Bytes;
-use itertools::Itertools;
-use packed_simd::{FromCast, u8x16, u32x16};
-use crate::aoc::Puzzle;
-use crate::aoc::*;
+
+use packed_simd::{u8x16, u32x16};
+
+
 use crate::aoc_boilerplate;
 
 pub struct PuzzleDay;
@@ -206,7 +206,7 @@ pub fn solve_b(input: impl Iterator<Item=&str>) -> u32 {
 #[cfg(test)]
 mod tests {
     use crate::add_test;
-    use super::*;
+    
 
     add_test!(test_solve_a_example, solve_a, r#"1abc2
 pqr3stu8vwx
