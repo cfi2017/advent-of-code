@@ -9,8 +9,13 @@ criterion = {version = "0.3", features = ["html_reports"]}
 proc-macro2 = "1.0.67"
 
 [features]
-default = []
+default = ["e2023"]
 experimental = []
+e2018 = []
+e2019 = []
+e2021 = []
+e2022 = []
+e2023 = []
 
 [dependencies]
 aoc-client = "0.2.0"
@@ -19,12 +24,15 @@ aocf = {version = "0.1.18", features = ["html_parsing"]}
 aoc-runner = "0.3.0"
 aoc-runner-derive = "0.3.0"
 itertools = "0.12.0"
+rayon = "1.8.0"
 euclid = "0.22.7"
 tinyvec = "1.6.0"
 thiserror = "1.0.48"
+packed_simd = "0.3.9"
 query_map = "0.7.0"
 anyhow = "1.0.75"
 convert-base = "1.1.2"
+clap = { version = "4.4.11", features = ["derive"] }
 radix_fmt = "1.0.0"
 num = "0.4.1"
 derivative = "2.2.0"

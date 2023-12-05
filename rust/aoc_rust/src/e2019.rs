@@ -35,22 +35,22 @@ mod map2d;
 
 pub fn run() {
     // todo: day 1 as puzzle format
-    day01::PuzzleDay.run();
-    day02::PuzzleDay.run();
+    day01::PuzzleDay.run(true);
+    day02::PuzzleDay.run(true);
     // todo: fix day 3
     // day 3 is also very slow
-    Day03.run();
-    Day04.run();
+    Day03.run(true);
+    Day04.run(true);
     // todo: fix day 5 (divergence between part a and b breaks part a)
-    Day05.run();
-    Day06.run();
-    Day07.run();
-    Day08.run();
-    Day09.run();
-    Day10.run();
-    Day11.run();
-    Day12.run();
-    Day13.run();
-    Day14.run();
+    Day05.run(true);
+    Day06.run(true);
+    Day07.run(true);
+    Day08.run(true);
+    Day09.run(true);
+    Day10.run(true);
+    Day11.run(true);
+    Day12.run(true);
+    Day13.run(true);
+    Day14.run(true);
 
 }

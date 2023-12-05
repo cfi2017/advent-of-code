@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 use crate::aoc::Puzzle;
+use crate::aoc_boilerplate;
 
 pub struct PuzzleDay;
 
@@ -8,7 +9,7 @@ pub struct PuzzleDay;
 pub enum Color {
     Red,
     Green,
-    Blue
+    Blue,
 }
 
 impl FromStr for Color {
@@ -52,7 +53,8 @@ impl FromStr for Game {
                 .collect::<HashMap<Color, i32>>())
             .collect();
         Ok(Game {
-            id, rounds
+            id,
+            rounds,
         })
     }
 }
@@ -71,17 +73,17 @@ impl Game {
                         if max_cubes.0 < *n {
                             max_cubes.0 = *n;
                         }
-                    },
+                    }
                     Color::Green => {
                         if max_cubes.1 < *n {
                             max_cubes.1 = *n;
                         }
-                    },
+                    }
                     Color::Blue => {
                         if max_cubes.2 < *n {
                             max_cubes.2 = *n;
                         }
-                    },
+                    }
                 };
             }
         }
@@ -89,22 +91,22 @@ impl Game {
     }
 }
 
-impl Puzzle<Vec<Game>, i32, i32, 2023, 2> for PuzzleDay {
-    fn sanitize_input(&self, input: &str) -> Vec<Game> {
-        input.split("\n")
-            .filter(|x| !x.is_empty())
-            .map(str::parse::<Game>)
-            .map(Result::unwrap).collect()
-    }
-
-    fn solve_a(&self, games: Vec<Game>) -> i32 {
-        games.iter().filter(|x| x.possible()).map(|x| x.id).sum()
-    }
-
-    fn solve_b(&self, games: Vec<Game>) -> i32 {
-        games.iter().map(|x| x.power()).sum()
-    }
+aoc_boilerplate!(2023, 2, sanitize_input, solve_a, solve_b);
+pub fn sanitize_input(input: &str) -> Vec<Game> {
+    input.split("\n")
+        .filter(|x| !x.is_empty())
+        .map(str::parse::<Game>)
+        .map(Result::unwrap).collect()
 }
+
+pub fn solve_a(games: Vec<Game>) -> i32 {
+    games.iter().filter(|x| x.possible()).map(|x| x.id).sum()
+}
+
+pub fn solve_b(games: Vec<Game>) -> i32 {
+    games.iter().map(|x| x.power()).sum()
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -118,7 +120,7 @@ Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"#;
-        let games = PuzzleDay.sanitize_input(input);
+        let games = super::sanitize_input(input);
     }
 
     add_test!(test_solve_a_example, solve_a, r#"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -132,5 +134,4 @@ Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"#, 2286);
-
 }

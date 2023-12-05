@@ -2,6 +2,7 @@ use std::ops::{Add, Sub};
 use std::str::FromStr;
 use itertools::Itertools;
 use crate::aoc::Puzzle;
+use crate::aoc_boilerplate;
 
 pub struct PuzzleDay;
 
@@ -134,12 +135,13 @@ pub fn gen_border_positions(p: Point2D, len: usize, width: usize, height: usize)
     positions.iter().filter(|p| p.in_bounds(width, height)).cloned().collect()
 }
 
-impl Puzzle<Grid<u8>, i32, i32, 2023, 3> for PuzzleDay {
-    fn sanitize_input(&self, input: &str) -> Grid<u8> {
+aoc_boilerplate!(2023, 3, sanitize_input, solve_a, solve_b);
+
+    pub fn sanitize_input(input: &str) -> Grid<u8> {
         input.parse().unwrap()
     }
 
-    fn solve_a(&self, input: Grid<u8>) -> i32 {
+    pub fn solve_a(input: Grid<u8>) -> i32 {
         let mut nums = get_nums(&input);
         let width = input.data[0].len();
         let height = input.data.len();
@@ -151,7 +153,7 @@ impl Puzzle<Grid<u8>, i32, i32, 2023, 3> for PuzzleDay {
             .sum()
     }
 
-    fn solve_b(&self, input: Grid<u8>) -> i32 {
+    pub fn solve_b(input: Grid<u8>) -> i32 {
         let mut nums = get_nums(&input);
         let width = input.data[0].len();
         let height = input.data.len();
@@ -171,7 +173,7 @@ impl Puzzle<Grid<u8>, i32, i32, 2023, 3> for PuzzleDay {
             .map(|(_, v)| v[0].0 * v[1].0)
             .sum()
     }
-}
+
 
 #[cfg(test)]
 mod tests {
