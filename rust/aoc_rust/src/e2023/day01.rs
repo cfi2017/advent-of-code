@@ -128,9 +128,6 @@ fn first_num(input: impl Iterator<Item=u8>, table: &[[u8; 14]]) -> Option<u8> {
     for c in input {
         if c.is_ascii_digit() {
             return Some(c - b'0');
-        } else if !c.is_ascii_lowercase() {
-            state = 0;
-            continue;
         }
 
         let char_idx = (c - b'a') as usize;
