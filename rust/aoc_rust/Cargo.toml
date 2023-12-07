@@ -38,6 +38,7 @@ num = "0.4.1"
 derivative = "2.2.0"
 good_lp = { version = "1.7.0", default-features = false, features = ["minilp"] }
 lazy_static = "1.4.0"
+jemallocator = "0.5"
 
 [[bench]]
 name = "bench_main"

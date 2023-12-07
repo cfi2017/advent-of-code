@@ -86,4 +86,12 @@ macro_rules! add_test {
             assert_eq!(super::$part(input), $expected);
         }
     };
+    ($name:ident, $sanitize:ident, $part:ident, $input:expr, $expected:expr) => {
+        #[test]
+        fn $name() {
+            let input = $input;
+            let input = super::$sanitize(input);
+            assert_eq!(super::$part(input), $expected);
+        }
+    };
 }

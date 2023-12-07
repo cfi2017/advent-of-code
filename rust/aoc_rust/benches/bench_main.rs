@@ -17,4 +17,6 @@ criterion_main! {
     e2023::day02::benches,
     e2023::day03::benches,
     e2023::day04::benches,
+    e2023::day05::benches,
+    e2023::day06::benches,
 }
