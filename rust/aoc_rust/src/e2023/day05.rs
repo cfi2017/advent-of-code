@@ -37,13 +37,13 @@ impl ArrayButWithHoles {
             // 0 [ 2 3 4 5 ] 5 6 [ 2 3 4 ]
             while let Some(range) = ranges.pop() {
                 let before = range.start..range.end.min(source.start);
-                let inter = range.start.max(source.start)..range.end.min(source.end);
+                let contained = range.start.max(source.start)..range.end.min(source.end);
                 let after = range.start.max(source.end)..range.end;
                 if !before.is_empty() {
                     next.push(before);
                 }
-                if !inter.is_empty() {
-                    result.push((inter.start - source.start + dest.start)..(inter.end - source.start + dest.start));
+                if !contained.is_empty() {
+                    result.push((contained.start - source.start + dest.start)..(contained.end - source.start + dest.start));
                 }
                 if !after.is_empty() {
                     next.push(after);
