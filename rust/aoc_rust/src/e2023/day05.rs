@@ -28,7 +28,7 @@ impl ArrayButWithHoles {
     }
 
     // maps input ranges to output ranges
-    // len(output) may not be equal to len(input)
+    // len(output) >= len(input)
     pub fn get_ranges<'a>(&self, mut ranges: &'a mut Vec<Range<i64>>, mut next: &'a mut Vec<Range<i64>>) {
         let mut result = Vec::with_capacity(ranges.len() * 2);
 
